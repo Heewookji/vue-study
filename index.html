@@ -41,7 +41,6 @@
     <script type="module">
 
         import MessageList from './components/MessageList.js';
-        import MessageListItem from './components/MessageListItem.js';
 
         let vm = new Vue({
             el: '#app',
@@ -52,8 +51,9 @@
             methods: {
                 addMessage(event) {
                     if (!this.newMessage) return;
+                    let now = new Date();
                     this.messages.push({
-                        text: this.newMessage, createdAt: new Date()
+                        id: now.getTime(), text: this.newMessage, createdAt: now
                     });
                     this.newMessage = '';
                 },
