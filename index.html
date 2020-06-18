@@ -25,12 +25,7 @@
 
 <body>
     <div id="app" v-cloak>
-        <ul>
-            <li v-for="message in messages">
-                {{ message.text}} - {{message.createdAt}}
-                <button @click="deleteMessage(message)">X</button>
-            </li>
-        </ul>
+        <message-list v-bind:items="messages" v-on:delete="deleteMessage"></message-list>
         <!-- @submit은 v-on: submit의 줄임 -->
         <form @submit.prevent="addMessage">
             <textarea v-model="newMessage" placeholder="Leave a message">
@@ -39,8 +34,15 @@
             <div><button type="submit" :disabled="addDisabled">Add</button></div>
         </form>
     </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script>
+
+    <script type="module">
+
+        import MessageList from './components/MessageList.js';
+        import MessageListItem from './components/MessageListItem.js';
+
         let vm = new Vue({
             el: '#app',
             data: {
@@ -63,6 +65,9 @@
                 addDisabled() {
                     return this.messages.length >= 4 || this.newMessage.length >= 10;
                 }
+            },
+            components: {
+                MessageList
             }
         });
     </script>
