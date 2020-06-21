@@ -28,7 +28,7 @@
         <message-list v-bind:items="messages" v-on:delete="deleteMessage"></message-list>
         <!-- @submit은 v-on: submit의 줄임 -->
         <form @submit.prevent="addMessage">
-            <textarea v-model="newMessage" placeholder="Leave a message">
+            <textarea v-model="newMessage" placeholder="Leave a message" v-focus>
             </textarea>
             <!-- :disabled는 v-bind:disabled의 줄임 -->
             <div><button type="submit" :disabled="addDisabled">Add</button></div>
@@ -41,6 +41,8 @@
     <script type="module">
 
         import MessageList from './components/MessageList.js';
+        import './directives/focus.directive.js';
+        import './filters/datetime.filter.js';
 
         let vm = new Vue({
             el: '#app',
@@ -60,6 +62,7 @@
                 deleteMessage(message) {
                     this.messages.splice(this.messages.indexOf(message), 1);
                 }
+
             },
             computed: {
                 addDisabled() {
@@ -68,6 +71,12 @@
             },
             components: {
                 MessageList
+            },
+            beforeCreate: function () {
+                console.log('beforeCreate!');
+            },
+            created: function () {
+                console.log('created!');
             }
         });
     </script>
