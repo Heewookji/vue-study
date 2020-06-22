@@ -1,84 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Message App</title>
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-
-        body>div {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        textarea {
-            width: 100%;
-        }
-
-        ul {
-            padding: 0 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue test</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
-    <div id="app" v-cloak>
-        <message-list v-bind:items="messages" v-on:delete="deleteMessage"></message-list>
-        <!-- @submit은 v-on: submit의 줄임 -->
-        <form @submit.prevent="addMessage">
-            <textarea v-model="newMessage" placeholder="Leave a message" v-focus>
-            </textarea>
-            <!-- :disabled는 v-bind:disabled의 줄임 -->
-            <div><button type="submit" :disabled="addDisabled">Add</button></div>
-        </form>`
-    </div>
+  <div id="app">
+    <div ref="msg">{{ msg }}</div>
+    <div ref="div"></div>
+  </div>
 
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        msg: 'Hello World!'
+      },
+      beforeCreate() {
+        console.log('beforeCreate', this.msg);
+      },
+      created() {
+        console.log('created', this.msg);
+      },
+      beforeMount() {
+        console.log('beforeMount', this.$refs.div);
+      },
+      mounted() {
+        console.log('mounted', this.$refs.div);
+      },
+      beforeUpdate() {
+        console.log('beforeUpdate', this.$refs.msg.innerText)
+      },
+      updated() {
+        console.log('updated', this.$refs.msg.innerText)
+      },
+      beforeDestroy() {
+        console.log('beforeDestroy')
+      },
+      destroyed() {
+        console.log('destroyed')
+      },
+    }) 
+  </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <script type="module">
-
-        import MessageList from './components/MessageList.js';
-        import './directives/focus.directive.js';
-        import './filters/datetime.filter.js';
-        import lifecycleLogger from './mixins/lifecycle-logger.mixin.js';
-        import lifecycleLoggerPlugin from './plugins/lifecycle-logger.plugin.js';
-
-        Vue.use(lifecycleLoggerPlugin, { destroy: false });
-
-        let vm = new Vue({
-            name: 'mainApp',
-            el: '#app',
-            data: {
-                messages: [],
-                newMessage: ''
-            },
-            methods: {
-                addMessage(event) {
-                    if (!this.newMessage) return;
-                    let now = new Date();
-                    this.messages.push({
-                        id: now.getTime(), text: this.newMessage, createdAt: now
-                    });
-                    this.newMessage = '';
-                },
-                deleteMessage(message) {
-                    this.messages.splice(this.messages.indexOf(message), 1);
-                }
-
-            },
-            computed: {
-                addDisabled() {
-                    return this.messages.length >= 4 || this.newMessage.length >= 10;
-                }
-            },
-            components: {
-                MessageList
-            }
-        });
-    </script>
 </body>
+
 
 </html>
