@@ -32,7 +32,7 @@
             </textarea>
             <!-- :disabled는 v-bind:disabled의 줄임 -->
             <div><button type="submit" :disabled="addDisabled">Add</button></div>
-        </form>
+        </form>`
     </div>
 
 
@@ -43,8 +43,13 @@
         import MessageList from './components/MessageList.js';
         import './directives/focus.directive.js';
         import './filters/datetime.filter.js';
+        import lifecycleLogger from './mixins/lifecycle-logger.mixin.js';
+        import lifecycleLoggerPlugin from './plugins/lifecycle-logger.plugin.js';
+
+        Vue.use(lifecycleLoggerPlugin, { destroy: false });
 
         let vm = new Vue({
+            name: 'mainApp',
             el: '#app',
             data: {
                 messages: [],
@@ -71,12 +76,6 @@
             },
             components: {
                 MessageList
-            },
-            beforeCreate: function () {
-                console.log('beforeCreate!');
-            },
-            created: function () {
-                console.log('created!');
             }
         });
     </script>
